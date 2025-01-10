@@ -26,5 +26,22 @@
                 </button>
             </form>
         {% endif %}
+        {% if has_query %}
+            <h1>Search results for "{{ query }}"</h1>
+            <div id="results" class="search_results">
+                {% for album in results['albummatches'] %}
+                    <a class="search_result">
+                        <img class="search_result_image"
+                             src="{{ album['image'][2]['#text'] }}"
+                             alt="{{ album['name'] }}" />
+                        <div class="search_result_info">
+                            <h2 class="search_result_title">{{ album['name'] }}</h2>
+                            <p class="search_result_artist">{{ album['artist']['name'] }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {{ results }}
     </main>
 {% endblock %}
