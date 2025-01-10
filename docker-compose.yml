@@ -13,6 +13,8 @@ services:
       MONGODB_PASS: example
       SECRET_KEY: ${SECRET_KEY:-secret}
       AUTH_DURATION_HOURS: 1
+      LASTFM_API_KEY: ${LASTFM_API_KEY:-}
+      LASTFM_URL: ${LASTFM_API_URL:-}
     depends_on:
       - db
 
