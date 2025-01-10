@@ -1,0 +1,25 @@
+name: Docker Compose Workflow
+
+on:
+  push:
+    branches:
+      - main # Esegui l'azione sui push al branch principale (modifica secondo necessità)
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build_and_run:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and start Docker Compose
+        run: |
+          export SECRET_KEY=${{secrets.SECRET_KEY}}
+          docker compose up -d --build

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/auth/auth.css') }}" />
+{% endblock %}
+{% block title %}Signup{% endblock %}
+{% block content %}
+    <main class="signup_screen">
+        <div class="elements">
+            <header class="header">
+                <h1>
+                    Join
+                    <img alt="logo"
+                         class="navbar_logo"
+                         src="{{ url_for('static', filename='logo.svg') }}" />
+                    !
+                </h1>
+                <p>It's a pleasure to have you here! Please enter your data to join our community.</p>
+            </header>
+            <form action="{{ url_for("auth.signup") }}" method="POST" class="form">
+                {{ form.csrf_token }}
+                <fieldset class="item">
+                    {{ form.name.label(class="label") }}
+                    {{ form.name(class="input", placeholder="Mario") }}
+                    {% if form.name.errors %}
+                        <ul class="errors">
+                            {% for error in form.name.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <fieldset class="item">
+                    {{ form.surname.label(class="label") }}
+                    {{ form.surname(class="input", placeholder="Rossi") }}
+                    {% if form.surname.errors %}
+                        <ul class="errors">
+                            {% for error in form.surname.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <fieldset class="item">
+                    {{ form.username.label(class="label") }}
+                    {{ form.username(class="input") }}
+                    {% if form.username.errors %}
+                        <ul class="errors">
+                            {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <fieldset class="item">
+                    {{ form.email.label(class="label") }}
+                    {{ form.email(class="input", placeholder="info@example.com") }}
+                    {% if form.email.errors %}
+                        <ul class="errors">
+                            {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <fieldset class="item">
+                    {{ form.password.label(class="label") }}
+                    {{ form.password(class="input", placeholder="Password") }}
+                    {% if form.password.errors %}
+                        <ul class="errors">
+                            {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <fieldset class="item">
+                    {{ form.confirm.label(class="label") }}
+                    {{ form.confirm(class="input", placeholder="Confirm Your Password") }}
+                    {% if form.confirm.errors %}
+                        <ul class="errors">
+                            {% for error in form.confirm.errors %}<li>{{ error }}</li>{% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                {{ form.submit(class="submit_button") }}
+                {% if form.form_errors %}
+                    <ul class="errors">
+                        {% for error in form.form_errors %}<li>{{ error }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+            </form>
+            <p class="switch_prompt">
+                Already have an account? <a href="{{ url_for("auth.login") }}">Login</a>
+            </p>
+        </div>
+    </main>
+{% endblock %}

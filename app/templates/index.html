@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/index.css') }}" />
+{% endblock %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <main class="home_screen">
+        <header class="header">
+            <img src="{{ url_for('static', filename='logo.svg') }}" />
+            <h1>Enjoy your music with others!</h1>
+            <p>
+                Welcome to NoteInvader!
+                <br />
+                Here, you can add your own album collection and snoop around on your friends' collections!
+            </p>
+            <div class="header_links">
+                <a class="header_link login" href="{{ url_for("auth.login") }}">Login</a>
+                <a class="header_link register" href="{{ url_for("auth.signup") }}">Signup</a>
+            </div>
+        </header>
+    </main>
+{% endblock %}

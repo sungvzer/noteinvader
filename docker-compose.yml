@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
+
+services:
+  app:
+    build: .
+    ports:
+      - "8080:5000"
+    environment:
+      MONGODB_HOST: db
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: noteinvader-prod
+      MONGODB_USER: root
+      MONGODB_PASS: example
+      SECRET_KEY: ${SECRET_KEY:-secret}
+      AUTH_DURATION_HOURS: 1
+    depends_on:
+      - db
+
+  db:
+    image: mongo:latest
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - "27017:27017"
+    volumes:
+      - db-data:/data/db
+
+volumes:
+  db-data:

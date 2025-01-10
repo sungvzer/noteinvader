@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/404.css') }}" />
+{% endblock %}
+{% block title %}404{% endblock %}
+{% block content %}
+    <main class="page-404">
+        <img src="https://cdn.jsdelivr.net/gh/ahmedhosna95/upload@1731955f/sad404.svg"
+             alt="404">
+        <h1>We could not find what you're looking for</h1>
+        <p>
+            Our librarians could not find what you're looking for.
+            <br />
+            Maybe they're just tired after a long day of work, maybe try again in a bit?
+            <br />
+            Go to our <a href={{ url_for("templates.index") }}>home</a> and maybe you'll find your way.
+        </p>
+    </main>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/search.css') }}" />
+{% endblock %}
+{% block title %}Search{% endblock %}
+{% block content %}
+    <main class='search_page {{ classname }}'>
+        {% if not has_query %}
+            <h1>Search for an album or an artist</h1>
+            <form class="search_form"
+                  action="{{ url_for("templates.search") }}"
+                  method="get">
+                <input class="search_input"
+                       id="search_input"
+                       type="text"
+                       name="q"
+                       placeholder="Search here..."
+                       required
+                       onkeyup="syncSearchBoxes(false)"
+                       value="{% if query %}{{ query }}{% endif %}" />
+                <button class="search_button" type="submit">
+                    <img alt="search"
+                         class="search_icon"
+                         src="{{ url_for('static', filename='images/search.svg') }}" />
+                </button>
+            {% endif %}
+        </main>
+    {% endblock %}
