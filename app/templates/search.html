@@ -27,21 +27,37 @@
             </form>
         {% endif %}
         {% if has_query %}
-            <h1>Search results for "{{ query }}"</h1>
+            <h1>
+                Search results for <span class="query_reminder">{{ query }}</span>
+            </h1>
             <div id="results" class="search_results">
                 {% for album in results['albummatches'] %}
-                    <a class="search_result">
+                    <div class="search_result" id="{{ album['_id'] }}">
                         <img class="search_result_image"
-                             src="{{ album['image'][2]['#text'] }}"
+                             src="{{ album['image'][3]['#text'] }}"
                              alt="{{ album['name'] }}" />
                         <div class="search_result_info">
-                            <h2 class="search_result_title">{{ album['name'] }}</h2>
-                            <p class="search_result_artist">{{ album['artist']['name'] }}</p>
+                            <div class="search_result_artist_title">
+                                <h2 class="search_result_title">{{ album['name'] }}</h2>
+                                <p class="search_result_artist">{{ album['artist'] }}</p>
+                            </div>
+                            <div class="search_result_footer">
+                                <button class="search_result_favorite"
+                                        {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
+                                        onclick="toggleFavorite('{{ album['_id'] }}')"></button>
+                                <p class="search_result_stars">
+                                    {% if 'stars' in album %}
+                                        {{ album['stars'] }}
+                                    {% else %}
+                                        0
+                                    {% endif %}
+                                </p>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
-        {{ results }}
     </main>
 {% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/search.js') }}"></script>{% endblock %}

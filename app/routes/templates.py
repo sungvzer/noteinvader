@@ -1,6 +1,6 @@
-from json import dumps
 from flask import Blueprint, render_template, request
 from flask_login import login_required
+from flask_pymongo import ObjectId
 
 from app.services.music import MusicService
 
@@ -32,4 +32,5 @@ def search():
         has_query=has_query,
         classname=f"{'has' if has_query else 'no'}-query",
         results=res,
+        ObjectId=ObjectId,
     )
