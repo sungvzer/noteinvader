@@ -20,6 +20,8 @@ jobs:
         uses: docker/setup-buildx-action@v2
 
       - name: Build and start Docker Compose
+        env:
+          SECRET_KEY: ${{secrets.SECRET_KEY}}
+          LASTFM_API_KEY: ${{secrets.LASTFM_API_KEY}}
         run: |
-          export SECRET_KEY=${{secrets.SECRET_KEY}}
           docker compose up -d --build
