@@ -46,11 +46,20 @@ def load_user(user_id):
     return None
 
 
+def is_in_favorites(album_id, favorite_albums):
+    return str(album_id) in [str(fav) for fav in favorite_albums]
+
+
+# Register the filter
+app.jinja_env.filters["is_in_favorites"] = is_in_favorites
+
 from app.routes.templates import templates
 from app.routes.auth import auth
+from app.routes.api.favorites import favorites
 
 app.register_blueprint(templates)
 app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(favorites, url_prefix="/api/favorites")
 
 
 # Support for old browsers
