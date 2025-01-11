@@ -10,7 +10,7 @@ class User(UserMixin):
         self.email = user_data["email"]
         self.name = user_data["name"]
         self.surname = user_data["surname"]
-        self.favorite_albums = user_data["favorite_albums"]
+        self.favorite_albums = user_data["favorite_albums"] or []
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

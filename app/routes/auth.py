@@ -67,6 +67,7 @@ def signup():
 
         hashed = bcrypt.hashpw(data["password"].encode("utf-8"), bcrypt.gensalt())
         data["password"] = hashed.decode("utf-8")
+        data["favorite_albums"] = []
 
         _id = db.users.insert_one(
             {
@@ -75,6 +76,7 @@ def signup():
                 "username": data["username"],
                 "email": data["email"],
                 "password": data["password"],
+                "favorite_albums": data["favorite_albums"],
             }
         ).inserted_id
 
