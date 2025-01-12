@@ -21,10 +21,14 @@ def search():
     if page < 1:
         page = 1
     has_query = bool(query)
+
+    pages = None
+    res = None
     if has_query:
         res = MusicService.find_albums(query, page)
-    else:
-        res = None
+        total_results = int(res["totalResults"]) if "totalResults" in res else 0
+        items_per_page = int(res["itemsPerPage"]) if "itemsPerPage" in res else 0
+        pages = total_results // items_per_page + 1 if items_per_page > 0 else 0
 
     return render_template(
         "search.html",
@@ -32,5 +36,7 @@ def search():
         has_query=has_query,
         classname=f"{'has' if has_query else 'no'}-query",
         results=res,
-        ObjectId=ObjectId,
+        pages=pages,
+        page=page,
+        len=len,
     )

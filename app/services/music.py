@@ -43,22 +43,24 @@ class MusicService:
             for album in result["albummatches"]
         ]
 
-        existing_albums = get_db().music.find({"$or": artist_and_names})
-        existing_albums = list(existing_albums)
+        if len(artist_and_names) != 0:
+            existing_albums = get_db().music.find({"$or": artist_and_names})
+            existing_albums = list(existing_albums)
 
-        existing_albums = [
-            {"artist": e["artist"], "name": e["name"]} for e in existing_albums
-        ]
+            existing_albums = [
+                {"artist": e["artist"], "name": e["name"]} for e in existing_albums
+            ]
 
-        # insert albums of which the pair name-artist is not already in existing
-        to_insert = [
-            {**album, "stars": 0}
-            for album in result["albummatches"]
-            if {"artist": album["artist"], "name": album["name"]} not in existing_albums
-        ]
+            # insert albums of which the pair name-artist is not already in existing
+            to_insert = [
+                {**album, "stars": 0}
+                for album in result["albummatches"]
+                if {"artist": album["artist"], "name": album["name"]}
+                not in existing_albums
+            ]
 
-        if len(to_insert) != 0:
-            get_db().music.insert_many(to_insert)
+            if len(to_insert) != 0:
+                get_db().music.insert_many(to_insert)
 
         for idx, match in enumerate(result["albummatches"]):
             found = get_db().music.find_one(

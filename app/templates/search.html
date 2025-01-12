@@ -27,36 +27,60 @@
             </form>
         {% endif %}
         {% if has_query %}
-            <h1>
-                Search results for <span class="query_reminder">{{ query }}</span>
-            </h1>
-            <div id="results" class="search_results">
-                {% for album in results['albummatches'] %}
-                    <div class="search_result" id="{{ album['_id'] }}">
-                        <img class="search_result_image"
-                             src="{{ album['image'][3]['#text'] }}"
-                             alt="{{ album['name'] }}" />
-                        <div class="search_result_info">
-                            <div class="search_result_artist_title">
-                                <h2 class="search_result_title">{{ album['name'] }}</h2>
-                                <p class="search_result_artist">{{ album['artist'] }}</p>
-                            </div>
-                            <div class="search_result_footer">
-                                <button class="search_result_favorite"
-                                        {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
-                                        onclick="toggleFavorite('{{ album['_id'] }}')"></button>
-                                <p class="search_result_stars">
-                                    {% if 'stars' in album %}
-                                        {{ album['stars'] }}
-                                    {% else %}
-                                        0
-                                    {% endif %}
-                                </p>
+            {% if len(results['albummatches']) == 0 %}
+                <p class="no_results">
+                    No results found for <span class="query_reminder">{{ query }}</span>
+                </p>
+            {% else %}
+                <h1>
+                    Search results for <span class="query_reminder">{{ query }}</span>
+                </h1>
+                <div id="results" class="search_results">
+                    {% for album in results['albummatches'] %}
+                        <div class="search_result" id="{{ album['_id'] }}">
+                            {% if album['image'][3]['#text'] %}
+                                <img class="search_result_image"
+                                     src="{{ album['image'][3]['#text'] }}"
+                                     alt="{{ album['name'] }}"
+                                     onerror="this.src='{{ url_for('static', filename='images/not-found.webp') }}'; this.onerror=null;" />
+                            {% else %}
+                                <img class="search_result_image"
+                                     src="{{ url_for('static', filename='images/not-found.webp') }}"
+                                     alt="{{ album['name'] }}" />
+                            {% endif %}
+                            <div class="search_result_info">
+                                <div class="search_result_artist_title">
+                                    <h2 class="search_result_title">{{ album['name'] }}</h2>
+                                    <p class="search_result_artist">{{ album['artist'] }}</p>
+                                </div>
+                                <div class="search_result_footer">
+                                    <button class="search_result_favorite"
+                                            {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
+                                            onclick="toggleFavorite('{{ album['_id'] }}')"></button>
+                                    <p class="search_result_stars">
+                                        {% if 'stars' in album %}
+                                            {{ album['stars'] }}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </p>
+                                </div>
                             </div>
                         </div>
+                    {% endfor %}
+                </div>
+                {% if pages > 1 %}
+                    <div class="page_navigation">
+                        <button class="page_navigation_button"
+                                onClick="goToPage({{ page - 1 }})"
+                                {% if page == 1 %}disabled{% endif %}>Previous</button>
+                        <p class="page_navigation_info">Page {{ page }} of {{ pages }}</p>
+                        <button class="page_navigation_button"
+                                onClick="goToPage({{ page + 1 }})"
+                                {% if page == pages %}disabled{% endif %}>Next</button>
                     </div>
-                {% endfor %}
-            </div>
+                {% endif %}
+            {% endif %}
         {% endif %}
     </main>
 {% endblock %}
