@@ -55,15 +55,29 @@
                     <a class="navbar_link" href="/">Home</a>
                     {% if current_user.is_authenticated %}
                         <a class="navbar_link" href="{{ url_for("auth.logout") }}">Logout</a>
+                        <a href="{{ url_for("auth.logout") }}">
+                            <img class="navbar_link_icon"
+                                 src="{{ url_for('static', filename='images/logout.svg') }}"
+                                 alt="logout" />
+                        </a>
                     {% else %}
                         <a class="navbar_link" href="{{ url_for("auth.login") }}">Login</a>
-                        <a class="navbar_link" href="{{ url_for("auth.signup") }}">Signup</a>
-                    {% endif %}
-                </div>
-            </nav>
-        {% endif %}
-        {% block content %}{% endblock %}
-        {% block scripts %}{% endblock %}
-        <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-    </body>
-</html>
+                        <a href="{{ url_for("auth.login") }}">
+                            <img class="navbar_link_icon"
+                                 src="{{ url_for('static', filename='images/login.svg') }}"
+                                 alt="login" />
+                            <a class="navbar_link" href="{{ url_for("auth.signup") }}">Signup</a>
+                            <a href="{{ url_for("auth.signup") }}">
+                                <img class="navbar_link_icon"
+                                     src="{{ url_for('static', filename='images/signup.svg') }}"
+                                     alt="signup" />
+                            </a>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endif %}
+            {% block content %}{% endblock %}
+            {% block scripts %}{% endblock %}
+            <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+        </body>
+    </html>
