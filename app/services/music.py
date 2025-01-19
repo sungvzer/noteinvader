@@ -1,3 +1,4 @@
+from flask_pymongo import ObjectId
 from app import app
 from os import getenv
 import requests
@@ -53,7 +54,7 @@ class MusicService:
 
             # insert albums of which the pair name-artist is not already in existing
             to_insert = [
-                {**album, "stars": 0}
+                {**album, "stars": 0, "needs_detail": True}
                 for album in result["albummatches"]
                 if {"artist": album["artist"], "name": album["name"]}
                 not in existing_albums
@@ -70,3 +71,34 @@ class MusicService:
                 result["albummatches"][idx] = {**match, **found}
 
         return result
+
+    @staticmethod
+    def get_album(album_id: ObjectId):
+        album = get_db().music.find_one({"_id": album_id})
+        if album is None:
+            return None
+
+        if album["needs_detail"]:
+            album_url = album["url"]
+            album_url = album_url.replace("https://www.last.fm/music/", "")
+            artist, name = album_url.split("/")
+
+            url = getenv("LASTFM_URL")
+            api_key = getenv("LASTFM_API_KEY")
+            method = "album.getinfo"
+            format = "json"
+
+            response = requests.get(
+                f"{url}?method={method}&artist={artist}&album={name}&api_key={api_key}&format={format}"
+            )
+
+            if not response.ok:
+                return None
+
+            merged = {**album, **response.json()["album"]}
+            merged["needs_detail"] = False
+            get_db().music.update_one({"_id": album_id}, {"$set": merged})
+
+            return merged
+
+        return album

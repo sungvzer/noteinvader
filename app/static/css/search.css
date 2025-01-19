@@ -81,7 +81,10 @@
 }
 
 .search_result_title {
-  font-size: 0.875rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: unset;
+  cursor: pointer;
 }
 
 .search_result_artist_title {

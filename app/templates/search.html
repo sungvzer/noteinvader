@@ -50,7 +50,8 @@
                             {% endif %}
                             <div class="search_result_info">
                                 <div class="search_result_artist_title">
-                                    <h2 class="search_result_title">{{ album['name'] }}</h2>
+                                    <a href="{{ url_for('templates.album', album_id=album['_id']) }}"
+                                       class="search_result_title">{{ album['name'] }}</a>
                                     <p class="search_result_artist">{{ album['artist'] }}</p>
                                 </div>
                                 <div class="search_result_footer">

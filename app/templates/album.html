@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/album.css') }}" />
+{% endblock %}
+{% block title %}{{ album.name }}{% endblock %}
+{% block content %}
+    <main class="album_page">
+        <header class="album_page_header">
+            <div class="album_page_info">
+                <div>
+                    <h1 class="album_page_tit centerle">{{ album.name }}</h1>
+                    <a href="{{ url_for("templates.search", q=album.artist) }}"
+                       class="album_page_artist">{{ album.artist }}</a>
+                    <a href="{{ album.url }}"
+                       class="album_url"
+                       target="_blank noreferrer noopener"
+                       title="Listen to {{ album.name }} on Last.fm">
+                        <img src="{{ url_for('static', filename='images/lastfm.svg') }}"
+                             alt="Last.fm"
+                             class="lastfm_icon">
+                    </a>
+                </div>
+                <div class="album_footer" id={{ album._id }}>
+                    <button class="album_favorite"
+                            {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
+                            onclick="toggleFavorite('{{ album['_id'] }}')"></button>
+                    <p class="search_result_stars">
+                        {% if 'stars' in album %}
+                            {{ album['stars'] }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <img src="{{ album.image[3]['#text'] }}"
+                 alt="Album cover"
+                 class="album_cover"
+                 draggable="false">
+        </header>
+        <div class="tracks">
+            <table class="tracks_table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>Duration</th>
+                        <th>
+                            <!-- Last.fm button -->
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for track in album.tracks.track %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ track.name }}</td>
+                            <td>{{ track.duration|seconds_to_time_string }}</td>
+                            {% if track.url %}
+                                <td>
+                                    <a href="{{ track.url }}"
+                                       title="Open &quot;{{ track.name }}&quot; on Last.fm">
+                                        <img src="{{ url_for('static', filename='images/lastfm.svg') }}"
+                                             alt="Last.fm"
+                                             class="lastfm_icon">
+                                    </a>
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if album.wiki %}
+            <section class="album_wiki">
+                <h2>Wiki</h2>
+                <p>{{ album.wiki.content | safe }}</p>
+            </section>
+        {% endif %}
+    </header>
+</main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/search.js') }}"></script>{% endblock %}

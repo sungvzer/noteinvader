@@ -12,3 +12,11 @@ function syncSearchBoxes(isNavbar) {
     navbarSearch.value = search.value;
   }
 }
+
+window.onload = function () {
+  const allLinks = document.querySelectorAll("main a");
+  for (const link of allLinks) {
+    link.target = "_blank noopenner noreferrer";
+  }
+  console.log("album.js loaded");
+};

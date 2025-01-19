@@ -50,8 +50,20 @@ def is_in_favorites(album_id, favorite_albums):
     return str(album_id) in [str(fav) for fav in favorite_albums]
 
 
+def seconds_to_time_string(seconds: int | None):
+    if seconds is None:
+        return "0:00"
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+    if hours > 0:
+        return f"{hours}:{minutes:02}:{seconds:02}"
+    return f"{minutes}:{seconds:02}"
+
+
 # Register the filter
 app.jinja_env.filters["is_in_favorites"] = is_in_favorites
+app.jinja_env.filters["seconds_to_time_string"] = seconds_to_time_string
 
 from app.routes.templates import templates
 from app.routes.auth import auth

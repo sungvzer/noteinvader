@@ -40,3 +40,10 @@ def search():
         page=page,
         len=len,
     )
+
+
+@templates.route("/album/<album_id>")
+@login_required
+def album(album_id: str):
+    album = MusicService.get_album(ObjectId(album_id))
+    return render_template("album.html", album=album)
