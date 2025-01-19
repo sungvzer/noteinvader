@@ -38,16 +38,19 @@
                 <div id="results" class="search_results">
                     {% for album in results['albummatches'] %}
                         <div class="search_result" id="{{ album['_id'] }}">
-                            {% if album['image'][3]['#text'] %}
-                                <img class="search_result_image"
-                                     src="{{ album['image'][3]['#text'] }}"
-                                     alt="{{ album['name'] }}"
-                                     onerror="this.src='{{ url_for('static', filename='images/not-found.webp') }}'; this.onerror=null;" />
-                            {% else %}
-                                <img class="search_result_image"
-                                     src="{{ url_for('static', filename='images/not-found.webp') }}"
-                                     alt="{{ album['name'] }}" />
-                            {% endif %}
+                            <a href="{{ url_for('templates.album', album_id=album['_id']) }}"
+                               class="search_result_title">
+                                {% if album['image'][3]['#text'] %}
+                                    <img class="search_result_image"
+                                         src="{{ album['image'][3]['#text'] }}"
+                                         alt="{{ album['name'] }}"
+                                         onerror="this.src='{{ url_for('static', filename='images/not-found.webp') }}'; this.onerror=null;" />
+                                {% else %}
+                                    <img class="search_result_image"
+                                         src="{{ url_for('static', filename='images/not-found.webp') }}"
+                                         alt="{{ album['name'] }}" />
+                                {% endif %}
+                            </a>
                             <div class="search_result_info">
                                 <div class="search_result_artist_title">
                                     <a href="{{ url_for('templates.album', album_id=album['_id']) }}"
