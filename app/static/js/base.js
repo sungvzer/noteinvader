@@ -16,7 +16,8 @@ function syncSearchBoxes(isNavbar) {
 window.onload = function () {
   const allLinks = document.querySelectorAll("main a");
   for (const link of allLinks) {
-    link.target = "_blank noopenner noreferrer";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
   }
   console.log("album.js loaded");
 };
