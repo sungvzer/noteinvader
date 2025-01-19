@@ -117,3 +117,21 @@
 .album_page_artist {
   color: white;
 }
+
+@media (min-width: 768px) {
+  .album_page_header {
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .tracks {
+    max-width: 80rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .album_wiki {
+    max-width: 80rem;
+  }
+}
