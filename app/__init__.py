@@ -68,10 +68,12 @@ app.jinja_env.filters["seconds_to_time_string"] = seconds_to_time_string
 from app.routes.templates import templates
 from app.routes.auth import auth
 from app.routes.api.favorites import favorites
+from app.routes.api.users import users
 
 app.register_blueprint(templates)
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(favorites, url_prefix="/api/favorites")
+app.register_blueprint(users, url_prefix="/api/users")
 
 
 # Support for old browsers

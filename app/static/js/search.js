@@ -1,6 +1,4 @@
 async function toggleFavorite(albumId) {
-  console.log("toggleFavorite: " + albumId);
-
   const response = await fetch(`/api/favorites/${albumId}`, {
     method: "POST",
   });

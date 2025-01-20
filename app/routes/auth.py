@@ -41,7 +41,7 @@ def login():
 
         next = request.args.get("next")
         if not next:
-            return redirect(url_for("templates.index"))
+            return redirect(url_for("templates.user", username=current_user.username))
         return redirect(next)
 
     return render_template("auth/login.html", form=form)

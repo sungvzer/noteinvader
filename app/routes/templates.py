@@ -1,8 +1,10 @@
 from flask import Blueprint, render_template, request
-from flask_login import login_required
+from flask_login import current_user, login_required
 from flask_pymongo import ObjectId
 
+from app.models.user import User
 from app.services.music import MusicService
+from app.utils.db import get_db
 
 templates = Blueprint("templates", __name__)
 
@@ -47,3 +49,33 @@ def search():
 def album(album_id: str):
     album = MusicService.get_album(ObjectId(album_id))
     return render_template("album.html", album=album)
+
+
+@templates.route("/user/<username>")
+@login_required
+def user(username: str):
+    is_current_user = current_user.username == username
+
+    user: User | None = None
+    is_following = False
+    followers = get_db().users.count_documents({"following": username})
+    if is_current_user:
+        user = User({**current_user.__dict__, "_id": ObjectId(current_user.id)})
+    else:
+        found = get_db().users.find_one({"username": username})
+        if found is None:
+            return render_template("404.html"), 404
+        user = User(found)
+        is_following = user.username in current_user.following
+
+    favorite_albums = MusicService.fill_albums(user.favorite_albums)
+
+    return render_template(
+        "user.html",
+        user=user,
+        is_current_user=is_current_user,
+        is_following=is_following,
+        len=len,
+        followers=followers,
+        favorite_albums=favorite_albums,
+    )

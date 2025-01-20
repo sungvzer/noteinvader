@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block styles %}
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/user.css') }}" />
+{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
+{% block content %}
+    <main class="user_screen">
+        <header class="header">
+            <img src="https://images.unsplash.com/photo-1640951613773-54706e06851d?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                 alt="{{ user.username }}'s profile picture"
+                 class="profile_picture" />
+            <div class="user_info">
+                <h1 class="user_name">
+                    {{ user.name }} <span class="surname">{{ user.surname }}</span>
+                </h1>
+                <p class="user_username">@{{ user.username }}</p>
+                <div class="actions">
+                    <div class="stats">
+                        <div class="stat">
+                            <p class="stat_number">
+                                followers: <span class="followers" id="followers_number">{{ followers }}</span> people
+                            </p>
+                        </div>
+                    </div>
+                    {% if is_current_user %}
+                        <a class="header_link edit"
+                           href="{{ url_for("templates.user", username=user.username) }}">Edit profile</a>
+                    {% else %}
+                        <button onclick="toggleFollow('{{ user.username }}')"
+                                id="follow_button"
+                                class="header_link {% if is_following %}unfollow{% endif %}">
+                            {% if is_following %}
+                                Unfollow
+                            {% else %}
+                                Follow
+                            {% endif %}
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+            <form id="user_search"
+                  class="search"
+                  onsubmit="handleSubmit(); return false;">
+                <input class="search_input"
+                       id="user_search_input"
+                       type="text"
+                       name="username"
+                       placeholder="Search for a user..."
+                       required />
+                <button class="search_button" type="submit">
+                    <img alt="search"
+                         class="search_icon"
+                         src="{{ url_for('static', filename='images/search.svg') }}" />
+                </button>
+            </form>
+        </header>
+        <div class="albums">
+            <h2 class="albums_title">
+                {% if is_current_user %}
+                    Your favorite albums
+                {% else %}
+                    {{ user.username }}'s favorite albums
+                {% endif %}
+            </h2>
+            <div class="albums_grid">
+                {% for album in favorite_albums %}
+                    <div class="album" id={{ album['_id'] }}>
+                        <img src="{{ album.image[3]['#text'] }}"
+                             alt="{{ album.name }}"
+                             class="album_cover" />
+                        <div class="album_overlay">
+                            <a href="{{ url_for("templates.album", album_id=album['_id']) }}"
+                               class="album_overlay_link"></a>
+                            <div class="album_info">
+                                <div class="album_title_and_artist">
+                                    <p class="album_title">{{ album.name }}</p>
+                                    <p class="album_artist">{{ album.artist }}</p>
+                                </div>
+                                {% if is_current_user %}
+                                    <button class="album_favorite"
+                                            {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
+                                            onclick="toggleFavorite('{{ album['_id'] }}')"></button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/user.js') }}"></script>{% endblock %}

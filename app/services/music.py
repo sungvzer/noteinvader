@@ -1,3 +1,4 @@
+from typing import List
 from flask_pymongo import ObjectId
 from app import app
 from os import getenv
@@ -7,6 +8,36 @@ from app.utils.db import get_db
 
 
 class MusicService:
+    @staticmethod
+    def fill_albums(ids: List[ObjectId]):
+        albums = get_db().music.find({"_id": {"$in": ids}})
+        albums = list(albums)
+        for idx, album in enumerate(albums):
+            if album["needs_detail"]:
+                album_url = album["url"]
+                album_url = album_url.replace("https://www.last.fm/music/", "")
+                artist, name = album_url.split("/")
+
+                url = getenv("LASTFM_URL")
+                api_key = getenv("LASTFM_API_KEY")
+                method = "album.getinfo"
+                format = "json"
+
+                response = requests.get(
+                    f"{url}?method={method}&artist={artist}&album={name}&api_key={api_key}&format={format}"
+                )
+
+                if not response.ok:
+                    return None
+
+                merged = {**album, **response.json()["album"]}
+                merged["needs_detail"] = False
+                get_db().music.update_one({"_id": album["_id"]}, {"$set": merged})
+
+                albums[idx] = merged
+
+        return albums
+
     @staticmethod
     def find_albums(album: str, page: int = 1):
         MOCK_ALBUMS = False

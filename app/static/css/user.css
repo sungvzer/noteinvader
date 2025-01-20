@@ -1,0 +1,188 @@
+.user_name {
+  font-size: 1.25rem;
+}
+
+.user_name .surname {
+  color: var(--green-400);
+}
+
+.header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--black-500);
+  display: flex;
+  justify-content: start;
+  gap: 1rem;
+}
+
+.user_info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.profile_picture {
+  border-radius: 6px;
+  max-width: 8rem;
+}
+
+.user_username {
+  font-size: 0.875rem;
+  color: var(--black-500);
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+}
+
+.header_link {
+  padding: 0.5rem;
+  border: 1px solid var(--green-400);
+  border-radius: 6px;
+  text-decoration: none;
+  width: max-content;
+  color: var(--black-100);
+  background-color: var(--green-300);
+  font-size: 0.875rem;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.header_link:hover {
+  background-color: var(--green-400);
+}
+
+.header_link.unfollow {
+  background-color: var(--black-100);
+  color: var(--green-400);
+}
+
+.header_link.unfollow:hover {
+  color: var(--black-100);
+  background-color: var(--green-300);
+}
+
+.album {
+  position: relative;
+  width: max-content;
+  height: max-content;
+}
+
+.album_overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.albums_grid {
+  display: grid;
+  /* Make the columns take the whole screen */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 0fr));
+  gap: 1rem;
+}
+
+.album:hover .album_overlay {
+  opacity: 1;
+}
+
+.album_overlay_link {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.album_cover {
+  width: 100%;
+  height: auto;
+}
+
+.album_title {
+  font-size: 1.25rem;
+}
+
+.album_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: end;
+}
+
+.album_title_and_artist {
+  display: flex;
+  flex-direction: column;
+}
+
+.album_artist {
+  font-size: 0.875rem;
+  color: var(--black-500);
+}
+
+.albums {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+.album_favorite {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='m8.85 16.825l3.15-1.9l3.15 1.925l-.825-3.6l2.775-2.4l-3.65-.325l-1.45-3.4l-1.45 3.375l-3.65.325l2.775 2.425zm3.15.45l-4.15 2.5q-.275.175-.575.15t-.525-.2t-.35-.437t-.05-.588l1.1-4.725L3.775 10.8q-.25-.225-.312-.513t.037-.562t.3-.45t.55-.225l4.85-.425l1.875-4.45q.125-.3.388-.45t.537-.15t.537.15t.388.45l1.875 4.45l4.85.425q.35.05.55.225t.3.45t.038.563t-.313.512l-3.675 3.175l1.1 4.725q.075.325-.05.588t-.35.437t-.525.2t-.575-.15zm0-5.025'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+.album_favorite[data-checked="true"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='m12 17.275l-4.15 2.5q-.275.175-.575.15t-.525-.2t-.35-.437t-.05-.588l1.1-4.725L3.775 10.8q-.25-.225-.312-.513t.037-.562t.3-.45t.55-.225l4.85-.425l1.875-4.45q.125-.3.388-.45t.537-.15t.537.15t.388.45l1.875 4.45l4.85.425q.35.05.55.225t.3.45t.038.563t-.313.512l-3.675 3.175l1.1 4.725q.075.325-.05.588t-.35.437t-.525.2t-.575-.15z'/%3E%3C/svg%3E");
+}
+
+.search {
+  flex: 1;
+  display: flex;
+  justify-content: end;
+  align-items: start;
+  height: 2rem;
+}
+
+.search_input {
+  border: 2px solid var(--green-400);
+  padding: 0.5rem;
+  border-radius: 4px 0 0 4px;
+  background-color: var(--white);
+  height: 100%;
+}
+
+.search_button {
+  padding: 0.25rem;
+  border: 2px solid var(--green-400);
+  border-radius: 0 4px 4px 0;
+  background-color: var(--green-400);
+  color: var(--white);
+  width: auto;
+  aspect-ratio: 1;
+  cursor: pointer;
+  height: 100%;
+}
