@@ -56,7 +56,11 @@
                         <tr>
                             <td>{{ loop.index }}</td>
                             <td>{{ track.name }}</td>
-                            <td>{{ track.duration|seconds_to_time_string }}</td>
+                            {% if track.duration %}
+                                <td>{{ track.duration|seconds_to_time_string }}</td>
+                            {% else %}
+                                <td>Unknown</td>
+                            {% endif %}
                             {% if track.url %}
                                 <td>
                                     <a href="{{ track.url }}"
