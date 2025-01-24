@@ -41,8 +41,8 @@ Follow these instructions to run this project locally.
 Clone the project to your computer.
 
 ```bash
-$ git clone https://github.com/sungvzer/tecweb-project.git
-$ cd tecweb-project
+$ git clone https://github.com/sungvzer/noteinvader.git
+$ cd noteinvader
 ```
 
 Copy the `.env.example` file to `.env` and fill in the required environment variables.
