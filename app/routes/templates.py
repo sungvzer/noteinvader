@@ -68,7 +68,7 @@ def user(username: str):
         user = User(found)
         is_following = user.username in current_user.following
 
-    favorite_albums = MusicService.fill_albums(user.favorite_albums)
+    favorite_albums = MusicService.get_albums(user.favorite_albums)
 
     return render_template(
         "user.html",
