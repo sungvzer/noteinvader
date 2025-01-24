@@ -22,16 +22,19 @@
                     </a>
                 </div>
                 <div class="album_footer" id={{ album._id }}>
-                    <button class="album_favorite"
-                            {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
-                            onclick="toggleFavorite('{{ album['_id'] }}')"></button>
-                    <p class="search_result_stars">
-                        {% if 'stars' in album %}
-                            {{ album['stars'] }}
-                        {% else %}
-                            0
-                        {% endif %}
-                    </p>
+                    {% if users_with_album %}<span>{{ users_with_album | safe }}</span>{% endif %}
+                    <div class="album_favorite_container">
+                        <button class="album_favorite"
+                                {% if current_user.favorite_albums is not none and album['_id']|is_in_favorites(current_user.favorite_albums) %}data-checked="true"{% endif %}
+                                onclick="toggleFavorite('{{ album['_id'] }}')"></button>
+                        <p class="search_result_stars">
+                            {% if 'stars' in album %}
+                                {{ album['stars'] }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </p>
+                    </div>
                 </div>
             </div>
             <img src="{{ album.image[3]['#text'] }}"

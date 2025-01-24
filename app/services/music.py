@@ -1,4 +1,5 @@
 from typing import List
+from flask_login import current_user
 from flask_pymongo import ObjectId
 from app import app
 from os import getenv
@@ -8,6 +9,26 @@ from app.utils.db import get_db
 
 
 class MusicService:
+    @staticmethod
+    def find_following_with_album(album_id: ObjectId, limit: int = 3):
+        following = current_user.following
+        if following is None:
+            return []
+        if len(following) == 0:
+            return []
+
+        print(f"Here: {album_id}")
+
+        followers_with_album = (
+            get_db()
+            .users.find(
+                {"username": {"$in": following}, "favorite_albums": album_id},
+                {"username": 1, "_id": 1},  # Only include relevant fields
+            )
+            .limit(limit)
+        )
+        return list(followers_with_album)
+
     @staticmethod
     def get_albums(ids: List[ObjectId]):
         albums = get_db().music.find({"_id": {"$in": ids}})

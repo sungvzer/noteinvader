@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, url_for
 from flask_login import current_user, login_required
 from flask_pymongo import ObjectId
 
@@ -48,7 +48,26 @@ def search():
 @login_required
 def album(album_id: str):
     album = MusicService.get_album(ObjectId(album_id))
-    return render_template("album.html", album=album)
+    users_with_album = MusicService.find_following_with_album(
+        ObjectId(album_id), limit=4
+    )
+
+    get_username_span = (
+        lambda user: f'<a href={url_for("templates.user", username=user["username"])} class="also_likes">{user["username"]}</a>'
+    )
+
+    if users_with_album is not None and len(users_with_album) == 0:
+        users_with_album = None
+    elif len(users_with_album) == 1:
+        users_with_album = (
+            f"{get_username_span(users_with_album[0])} also likes this album!"
+        )
+    elif len(users_with_album) == 2:
+        users_with_album = f"{get_username_span(users_with_album[0])} and {get_username_span(users_with_album[1])} also like this album!"
+    elif len(users_with_album) > 2:
+        users_with_album = f"{', '.join([get_username_span(user) for user in users_with_album[:-1]])}, and {get_username_span(users_with_album[-1])} also like this album!"
+
+    return render_template("album.html", album=album, users_with_album=users_with_album)
 
 
 @templates.route("/user/<username>")

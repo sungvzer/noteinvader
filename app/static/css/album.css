@@ -32,7 +32,7 @@
   flex-direction: column;
   justify-content: space-between;
 }
-.album_footer {
+.album_favorite_container {
   display: flex;
   justify-content: start;
   flex-direction: row;
@@ -134,4 +134,14 @@
   .album_wiki {
     max-width: 80rem;
   }
+}
+
+.also_likes {
+  color: var(--white);
+}
+
+.album_footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
