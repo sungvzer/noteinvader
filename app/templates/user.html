@@ -31,10 +31,7 @@
                             {% endif %}
                         </p>
                     </div>
-                    {% if is_current_user %}
-                        <a class="header_link edit"
-                           href="{{ url_for("templates.user", username=user.username) }}">Edit profile</a>
-                    {% else %}
+                    {% if not is_current_user %}
                         <button onclick="toggleFollow('{{ user.username }}')"
                                 id="follow_button"
                                 class="header_link {% if is_following %}unfollow{% endif %}">
