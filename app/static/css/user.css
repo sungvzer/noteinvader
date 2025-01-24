@@ -186,3 +186,18 @@
   cursor: pointer;
   height: 100%;
 }
+
+.stats {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.followers_icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.followers {
+  color: var(--green-400);
+}

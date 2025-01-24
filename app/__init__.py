@@ -61,9 +61,28 @@ def seconds_to_time_string(seconds: int | None):
     return f"{minutes}:{seconds:02}"
 
 
+def compact_number(value: int):
+    """
+    Converts a number to a compact form (e.g., 1,000 -> 1K, 1,000,000 -> 1M).
+    """
+    try:
+        value = int(value)
+    except (ValueError, TypeError):
+        return value  # If value is not a number, return it unchanged
+
+    if value >= 1_000_000_000:
+        return f"{value / 1_000_000_000:.1f}B"
+    elif value >= 1_000_000:
+        return f"{value / 1_000_000:.1f}M"
+    elif value >= 1_000:
+        return f"{value / 1_000:.1f}K"
+    return str(value)
+
+
 # Register the filter
 app.jinja_env.filters["is_in_favorites"] = is_in_favorites
 app.jinja_env.filters["seconds_to_time_string"] = seconds_to_time_string
+app.jinja_env.filters["compact_number"] = compact_number
 
 from app.routes.templates import templates
 from app.routes.auth import auth

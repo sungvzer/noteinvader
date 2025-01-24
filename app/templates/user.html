@@ -17,11 +17,19 @@
                 <p class="user_username">@{{ user.username }}</p>
                 <div class="actions">
                     <div class="stats">
-                        <div class="stat">
-                            <p class="stat_number">
-                                followers: <span class="followers" id="followers_number">{{ followers }}</span> people
-                            </p>
-                        </div>
+                        <img class="followers_icon"
+                             src="{{ url_for("static", filename="/images/user.svg") }}" />
+                        <p class="stat_number">
+                            <span class="followers"
+                                  id="followers_number"
+                                  title="{{ followers }} {% if followers != 1 %}followers{% else %}follower{% endif %} ">{{ followers|compact_number }}
+                            </span>
+                            {% if followers != 1 %}
+                                followers
+                            {% else %}
+                                follower
+                            {% endif %}
+                        </p>
                     </div>
                     {% if is_current_user %}
                         <a class="header_link edit"
